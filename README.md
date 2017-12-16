@@ -1,0 +1,2 @@
+# intrepid-linguist
+WordPress theme
