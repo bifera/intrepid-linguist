@@ -40,5 +40,5 @@ gulp.task('sass-prod', function(){
 });
 
 gulp.task('watch', function(){
-    gulp.watch('scss/**/*.scss', ['sass']);
+    gulp.watch('./library/scss/**/*.scss', ['sass']);
 });

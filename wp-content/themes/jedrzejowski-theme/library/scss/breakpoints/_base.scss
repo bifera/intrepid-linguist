@@ -20,7 +20,7 @@ body {
 	font-size: 100%;
 	line-height: 1.5;
 	color: $text-color;
-	background-color: $gray;
+	background-color: $white;
   	-webkit-font-smoothing: antialiased;
   	-moz-osx-font-smoothing: grayscale;
 }
@@ -259,17 +259,13 @@ POSTS & CONTENT STYLES
 			background-color: $white;
 			border-radius: 3px;
 			margin-bottom: 1.5em;
-			border: 1px solid $border-color;
 
 			header {
-				border-bottom: 1px solid $light-gray;
 				padding: 1.5em;
 			}
 
 			footer {
 				padding: 1.5em;
-				border-top: 1px solid $light-gray;
-
 				p {
 					margin: 0;
 				}
@@ -734,7 +730,7 @@ COMMENT STYLES
 
 	/* comment reply link */
 	.comment-reply-link {
-		@extend .blue-btn;
+		@extend .btn;
 		font-size: 0.9em;
 		float: right;
 
@@ -790,7 +786,7 @@ COMMENT FORM STYLES
 
 	/* comment submit button */
 	#submit {
-		@extend .blue-btn;
+		@extend .btn;
 		float: right;
 		font-size: 1em;
 	}
