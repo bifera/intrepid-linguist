@@ -10,5 +10,14 @@ be seen on the Desktop.
 ******************************************************************/
 
 .wrap {
-  width: 1040px;
+    width: 1040px;
+}
+
+.header {
+    .header-branding {
+        float: left;
+    }
+    .inner-header-container.sticky {
+        height: 60px;
+    }
 }

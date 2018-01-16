@@ -9,3 +9,18 @@ on larger screens.
 
 ******************************************************************/
 
+.header {
+    .header-ipa {
+        max-width: 1220px;
+        margin-left: calc(50% - 610px);
+        margin-right: calc(50% - 610px);
+        .block {
+            &:first-of-type {
+                font-size: 180px;
+            }
+            &:last-of-type {
+                font-size: 190px;
+            }
+        }
+    }
+}
