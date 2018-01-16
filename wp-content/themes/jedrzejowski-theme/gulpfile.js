@@ -18,7 +18,7 @@ var sassProdOptions = {
 }
 
 gulp.task('checkJs', function(){
-    return gulp.src('./coffee-wp/wp-content/themes/anfrawer/js/*.js')
+    return gulp.src('./library/js/*.js')
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });

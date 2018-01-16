@@ -11,7 +11,7 @@
  * need any of it, just remove it. They are meant to be helpers and are
  * not required. It's your world baby, you can do whatever you want.
 */
-
+var $ = jQuery;
 
 /*
  * Get Viewport Dimensions
@@ -19,8 +19,8 @@
  * ( source: http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript )
 */
 function updateViewportDimensions() {
-	var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],x=w.innerWidth||e.clientWidth||g.clientWidth,y=w.innerHeight||e.clientHeight||g.clientHeight;
-	return { width:x,height:y };
+    var w=window,d=document,e=d.documentElement,g=d.getElementsByTagName('body')[0],x=w.innerWidth||e.clientWidth||g.clientWidth,y=w.innerHeight||e.clientHeight||g.clientHeight;
+    return { width:x,height:y };
 }
 // setting the viewport width
 var viewport = updateViewportDimensions();
@@ -32,12 +32,12 @@ var viewport = updateViewportDimensions();
  * ( source: http://stackoverflow.com/questions/2854407/javascript-jquery-window-resize-how-to-fire-after-the-resize-is-completed )
 */
 var waitForFinalEvent = (function () {
-	var timers = {};
-	return function (callback, ms, uniqueId) {
-		if (!uniqueId) { uniqueId = "Don't call this twice without a uniqueId"; }
-		if (timers[uniqueId]) { clearTimeout (timers[uniqueId]); }
-		timers[uniqueId] = setTimeout(callback, ms);
-	};
+    var timers = {};
+    return function (callback, ms, uniqueId) {
+        if (!uniqueId) { uniqueId = "Don't call this twice without a uniqueId"; }
+        if (timers[uniqueId]) { clearTimeout (timers[uniqueId]); }
+        timers[uniqueId] = setTimeout(callback, ms);
+    };
 })();
 
 // how long to wait before deciding the resize has stopped, in ms. Around 50-100 should work ok.
@@ -94,27 +94,93 @@ var timeToWaitForLast = 100;
  * then we can swap out those images since they are located in a data attribute.
 */
 function loadGravatars() {
-  // set the viewport using the function above
-  viewport = updateViewportDimensions();
-  // if the viewport is tablet or larger, we load in the gravatars
-  if (viewport.width >= 768) {
-  jQuery('.comment img[data-gravatar]').each(function(){
-    jQuery(this).attr('src',jQuery(this).attr('data-gravatar'));
-  });
-	}
+    // set the viewport using the function above
+    viewport = updateViewportDimensions();
+    // if the viewport is tablet or larger, we load in the gravatars
+    if (viewport.width >= 768) {
+        jQuery('.comment img[data-gravatar]').each(function(){
+            jQuery(this).attr('src',jQuery(this).attr('data-gravatar'));
+        });
+    }
 } // end function
 
 
 /*
  * Put all your regular jQuery in here.
 */
+
+function makeSticky() {
+    var headerContainer = jQuery('.inner-header-container');
+    var offset = $('#inner-header').offset().top;
+    $(window).on('scroll', function(){
+        if (($(this)).scrollTop() > offset) {
+            headerContainer.addClass('sticky');
+        } else {
+            headerContainer.removeClass('sticky');
+        }
+    });
+}
+
+function toggleMobileMenu() {
+    var menuToggler = $('#menu-toggler');
+    var menuContent = $('#menu-header');
+    var subMenuToggler = $('.submenu-pointer');
+    menuToggler.on('click', function(){
+        menuContent.fadeToggle().toggleClass('mobile-visible');
+    });
+
+    function arrowDown(element){
+        if (element.hasClass('fa-angle-up')) {
+            element.removeClass('fa-angle-up').addClass('fa-angle-down');
+        }
+    }
+
+    subMenuToggler.each(function(){
+        var subMenu = $(this).prev('.sub-menu');
+        var subMenus = menuContent.find('.sub-menu');
+        var thisToggler = $(this);
+        thisToggler.on('click', function(){
+            subMenus.each(function(){
+                $(this).slideUp();
+                var pointer = $(this).next('.submenu-pointer');
+                arrowDown(pointer);
+            });
+
+            if (subMenu.is(':visible')) {
+                arrowDown(thisToggler);
+                subMenu.slideUp();
+            } else {
+                subMenu.slideDown(function(){
+                    thisToggler.removeClass('fa-angle-down').addClass('fa-angle-up');
+/*                    subMenu.delay(3000).slideUp(function(){
+                        arrowDown(thisToggler);
+                    });*/
+                });
+            }
+        })
+    })
+
+}
+
+function fixSubmenu () {
+    var menuContent = $('#menu-header');
+    var menuArrow = $('<div>').addClass('submenu-pointer fa fa-angle-down');
+    var menuHasChildren = menuContent.find('.menu-item-has-children');
+    menuHasChildren.each(function(){
+        var arrow = menuArrow.clone(true);
+        $(this).append(arrow);
+    });
+}
+
 jQuery(document).ready(function($) {
 
-  /*
+    /*
    * Let's fire off the gravatar function
    * You can remove this if you don't need it
   */
-  loadGravatars();
-
+    loadGravatars();
+    makeSticky();
+    fixSubmenu();
+    toggleMobileMenu();
 
 }); /* end of as page load scripts */
