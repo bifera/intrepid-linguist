@@ -45,7 +45,7 @@
         <div id="container">
 
             <header class="header" role="banner" itemscope itemtype="http://schema.org/WPHeader">
-                <div class="header-ipa"><span class="block">[ˈwuka&#642;</span><span class="block">ˈjɛ̃n&#7693;&#658;&#603;j&#596;fsk&#690;i]</span>
+                <div class="header-ipa animated-pop-in"><span class="block">[ˈwuka&#642;</span><span class="block">ˈjɛ̃n&#7693;&#658;&#603;j&#596;fsk&#690;i]</span>
                     <div class="overlay"></div></div>
                 <div class="inner-header-container">
                     <div id="inner-header" class="wrap cf">

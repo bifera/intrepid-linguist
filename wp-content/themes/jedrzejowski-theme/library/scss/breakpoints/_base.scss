@@ -172,6 +172,7 @@ HEADER STYLES
         display: block;
         position: absolute;
         overflow: hidden;
+        opacity: 0;
         top: 0;
         left: 0;
         width: 100%;
@@ -179,6 +180,10 @@ HEADER STYLES
         z-index: 0;
         font-family: sans-serif;
         line-height: 1;
+        &.animated-pop-in {
+            animation-delay: .25s;
+            animation-duration: 1.25s;
+        }
         .block {
             display: block;
             &:first-of-type {
@@ -261,6 +266,7 @@ and more scalable.
             position: fixed;
             top: 0;
             left: 0;
+            z-index: 10;
             padding: 20px;
             background-color: transparentize($white, .05);
         }
@@ -356,11 +362,14 @@ POSTS & CONTENT STYLES
 *********************/
 
 main {
-    line-height: 1.5;
+    font-family: $serif;
 }
 
 img {
     border-radius: 2px;
+    border: 1px solid $border-color;
+    padding: 5px;
+    box-shadow: 0 0 5px -1px transparentize($gray-aluminum, .4);
 }
 
 #content {
@@ -371,9 +380,26 @@ img {
     background-color: $white;
     border-radius: 3px;
     margin-bottom: 1.5em;
-
     header {
-        padding: 1.5em;
+        padding: 30px 0;
+        position: relative;
+        &.animated-roll-right {
+            &::before {
+                position: absolute;
+                top: 0;
+                left: 0;
+                display: block;
+                height: 1px;
+                opacity: 0;
+                background-color: $border-color;
+                content: "";
+                animation-name: roll-right;
+                animation-delay: 1.25s;
+                animation-duration: 1s;
+                animation-timing-function:ease-out;
+                animation-fill-mode: forwards;
+            }
+        }
     }
 
     footer {
@@ -388,7 +414,12 @@ img {
 .single-title,
 .page-title,
 .entry-title {
-    margin: 0;
+    opacity: 0;
+    overflow: hidden;
+    &.animated-fade-in {
+        animation-delay: 1.25s;
+        animation-duration: 1s;
+    }
 }
 
 .single-title {}
@@ -420,8 +451,13 @@ img {
 
 /* entry content */
 .entry-content {
-    padding: 1.5em 1.5em 0;
-
+    padding: 1.5em 0;
+    line-height: 1.7;
+    opacity: 0;
+    &.animated-fade-in {
+        animation-delay: 1.25s;
+        animation-duration: 1s;
+    }
     p {
         margin: 0 0 1.5em;
     }
@@ -436,15 +472,38 @@ img {
     }
 
     ul {
-
-        li {}
+        li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+            &::before {
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 5px;
+                content: "\f105";
+                font-family: 'FontAwesome';
+                color: $link-color;
+            }
+        }
 
     }
 
+
     ol {
-
-        li {}
-
+        counter-reset: my-counter;
+        li {
+            position: relative;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            &::before {
+                counter-increment: my-counter;
+                content: counters(my-counter, ".") ". ";
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
     }
 
     table {
@@ -929,11 +988,27 @@ COMMENT FORM STYLES
 SIDEBARS & ASIDES
 *********************/
 
-.sidebar {}
+.sidebar {
+    font-family: $serif;
+    border-top: 1px solid $border-color;
+    padding-top: 30px;
+}
 
-.widgettitle {}
+.widgettitle {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    border-bottom: 1px solid $border-color;
+    font-size: 1.125rem;
+}
 
 .widget {
+
+    p {
+        margin-top: 5px;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
 
     ul {
 
@@ -950,6 +1025,10 @@ SIDEBARS & ASIDES
 
         }
 
+    }
+    > img {
+        display: block;
+        margin: 0 auto;
     }
 
 }
