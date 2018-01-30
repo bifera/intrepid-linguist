@@ -185,6 +185,35 @@ POSTS & CONTENT STYLES
         padding: 30px 0 0;
     }
 }
+
+/* image gallery styles */
+.gallery {
+    &.gallery-columns-2 {
+        margin-left: -20px;
+        margin-right: -20px;
+        dl {
+            &.gallery-item {
+                width: 50%;
+                float: left;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    }
+    &.gallery-columns-3 {
+        margin-left: -10px;
+        margin-right: -10px;
+        dl {
+            &.gallery-item {
+                width: 33.3333%;
+                float: left;
+                padding: 10px;
+            }
+        }
+    }
+}
+
+
 /*********************
 SIDEBARS & ASIDES
 *********************/

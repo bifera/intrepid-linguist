@@ -122,44 +122,69 @@ function makeSticky() {
 }
 
 function toggleMobileMenu() {
+    
     var menuToggler = $('#menu-toggler');
+    
     var menuContent = $('#menu-header');
-    var subMenuToggler = $('.submenu-pointer');
-    menuToggler.on('click', function(){
-        menuContent.fadeToggle().toggleClass('mobile-visible');
+    var menuToDrop = $('.menu-item-has-children');
+    
+    var closeBtn = $('<div class="mobile-close">');
+    
+    // clear desktop state
+    
+    menuContent.hide();
+    menuToDrop.off('mouseenter');
+    menuToDrop.off('mouseleave');
+    
+    
+    // mobile events
+    menuToDrop.on('click', '.submenu-pointer', function(){
+        $(this).prev('.sub-menu').slideToggle();
+        if ($(this).hasClass('fa-angle-down')) {
+            $(this).removeClass('fa-angle-down').addClass('fa-angle-up');
+        } else {
+            $(this).removeClass('fa-angle-up').addClass('fa-angle-down');
+        } 
     });
 
-    function arrowDown(element){
-        if (element.hasClass('fa-angle-up')) {
-            element.removeClass('fa-angle-up').addClass('fa-angle-down');
+    menuToggler.on('click', function(){
+        if (!menuContent.find('.mobile-close').length) {
+            var closeClone = closeBtn.clone(true);
+            menuContent.append(closeClone);
         }
-    }
-
-    subMenuToggler.each(function(){
-        var subMenu = $(this).prev('.sub-menu');
-        var subMenus = menuContent.find('.sub-menu');
-        var thisToggler = $(this);
-        thisToggler.on('click', function(){
-            subMenus.each(function(){
-                $(this).slideUp();
-                var pointer = $(this).next('.submenu-pointer');
-                arrowDown(pointer);
-            });
-
-            if (subMenu.is(':visible')) {
-                arrowDown(thisToggler);
-                subMenu.slideUp();
-            } else {
-                subMenu.slideDown(function(){
-                    thisToggler.removeClass('fa-angle-down').addClass('fa-angle-up');
-/*                    subMenu.delay(3000).slideUp(function(){
-                        arrowDown(thisToggler);
-                    });*/
-                });
-            }
-        })
+        menuContent.fadeIn().addClass('mobile-visible');
+    });
+    
+    menuContent.on('click', '.mobile-close', function(){
+        menuContent.fadeOut(400).delay(2000).removeclass('mobile-visible');
+        $(this).remove();
     })
+}
 
+function desktopDropdown(){
+    var menuContent = $('#menu-header');
+    var menuToDrop = $('.menu-item-has-children');
+    
+    menuContent.show();
+    
+    // clear mobile state
+    if (menuContent.hasClass('mobile-visible')) {
+        menuContent.removeClass('mobile-visible').show();
+        menuContent.find('.mobile-close').remove();
+    }
+    
+    menuToDrop.off('click', '.submenu-pointer');
+    
+    // desktop events
+    menuToDrop.on('mouseenter', function(){
+        var subMenu = $(this).find('.sub-menu');
+        subMenu.slideDown();
+    });
+    
+    menuToDrop.on('mouseleave', function(){
+        var subMenu = $(this).find('.sub-menu');
+        subMenu.slideUp();
+    });
 }
 
 function fixSubmenu () {
@@ -172,15 +197,50 @@ function fixSubmenu () {
     });
 }
 
+function simpleLightBox() {
+    var gallery = $('.gallery');
+    
+    var imageAnchors = gallery.find('.gallery-icon a');
+    var images = gallery.find('img');
+    console.log(images);
+    console.log(imageAnchors);
+    
+    imageAnchors.on('click', function(e){
+        e.preventDefault();
+        var src = $(this).attr('href');
+        
+        var box = $('<div class="lightbox-layer">');
+        var image = $('<img>').attr('src', src);
+        var imageWrapper = $('<div class="lightbox-image-wrapper>');
+        var arrowLeft = $('<i class="fa fa-chevron-left prev');
+    })
+}
+
 jQuery(document).ready(function($) {
 
     /*
    * Let's fire off the gravatar function
    * You can remove this if you don't need it
   */
+    
+    var mobBreakpoint = window.matchMedia('screen and (max-width: 767px)');
+    if (mobBreakpoint.matches) {
+        toggleMobileMenu();
+    } else {
+        desktopDropdown();
+    }
+    
+    mobBreakpoint.addListener(function(mq) {
+        if (mq.matches) {
+            toggleMobileMenu();
+        } else {
+            desktopDropdown();
+        }
+    })
+    
     loadGravatars();
     makeSticky();
     fixSubmenu();
-    toggleMobileMenu();
+    simpleLightBox();
 
 }); /* end of as page load scripts */
